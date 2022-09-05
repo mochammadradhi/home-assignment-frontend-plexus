@@ -1,3 +1,4 @@
 import Navbar from "./Navbar";
-
-export { Navbar };
+import ScrollToTop from "./ScrollToTop";
+import Footer from "./Footer";
+export { Navbar, ScrollToTop, Footer };
