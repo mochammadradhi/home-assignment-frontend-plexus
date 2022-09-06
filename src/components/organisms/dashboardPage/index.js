@@ -1,7 +1,6 @@
 import { FaFacebook, FaSlack, FaWhatsapp, FaPinterestP } from "react-icons/fa";
-import { Navbar, ScrollToTop, Footer } from "../../templates";
-
-import { useState } from "react";
+import { Navbar, ScrollToTop, Footer, Loader } from "../../templates";
+import { useState, Suspense } from "react";
 import { Pannellum } from "pannellum-react";
 const DashboardPage = (props) => {
   const { dataPortofolio, dataClient, dataAboutUs, dataTeam } = props;
@@ -30,7 +29,7 @@ const DashboardPage = (props) => {
               dolore consequatur eos? Quaerat obcaecati veritatis cum eligendi
               temporibus explicabo!
             </p>
-            <button className="fontTitle bg-[#3E5B5D] text-white font-medium tracking-wide p-3">
+            <button className="fontTitle bg-[#3E5B5D]  text-white font-medium tracking-wide p-3">
               About Us
             </button>
           </div>
@@ -39,16 +38,16 @@ const DashboardPage = (props) => {
           </div>
           <div className="basis-1/3  mx-auto mt-10 laptop:mt-10">
             <div className="flex flex-wrap mx-auto justify-evenly  text-2xl text-center  text-[#3E5B5D]">
-              <a href="#" className="mx-2 hover:text-[#34BFE9]">
+              <a href="!#" className="mx-2 hover:text-[#34BFE9]">
                 <FaSlack />
               </a>
-              <a href="#" className="mx-2 hover:text-[#4267B2]">
+              <a href="!#" className="mx-2 hover:text-[#4267B2]">
                 <FaFacebook />
               </a>
-              <a href="#" className="mx-2 hover:text-[#25D366]">
+              <a href="!#" className="mx-2 hover:text-[#25D366]">
                 <FaWhatsapp />
               </a>
-              <a href="#" className="mx-2 hover:text-[#E60023]">
+              <a href="!#" className="mx-2 hover:text-[#E60023]">
                 <FaPinterestP />
               </a>
             </div>
@@ -75,28 +74,32 @@ const DashboardPage = (props) => {
             <button className="text-lg p-3">All</button>
             <button className="text-lg p-3">Portfolio</button>
           </div>
-          <div className="flex gap-3 laptop:flex-col laptop:p-4  ">
-            {dataPortofolio.map((data) => (
-              <>
-                <button
-                  className="p-2"
-                  key={data.id}
-                  onClick={() => {
-                    changecontent(data);
-                    setOpenModal(true);
-                  }}
-                >
-                  <img
-                    src={data.image_url}
-                    alt={data.image}
-                    className="rounded-2xl shadow-xl group-hover:opacity-75"
-                  />
-                </button>
-              </>
-            ))}
-          </div>
+
+          <Suspense fallback={<div className="text-4xl">LOADING..</div>}>
+            <div className="flex gap-3 laptop:flex-col laptop:p-4  ">
+              {dataPortofolio.map((data) => (
+                <>
+                  <button
+                    className="p-2"
+                    key={data.id}
+                    onClick={() => {
+                      changecontent(data);
+                      setOpenModal(true);
+                    }}
+                  >
+                    <img
+                      src={data.image_url}
+                      alt={data.image}
+                      className="rounded-2xl shadow-xl group-hover:opacity-75"
+                    />
+                  </button>
+                </>
+              ))}
+            </div>
+          </Suspense>
         </div>
       </section>
+
       {/* Section Portofolio details
         - impelementation responsive design
         - impelementation from wireframe
@@ -110,8 +113,10 @@ const DashboardPage = (props) => {
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                   <div className="flex justify-between items-center object-center p-5 rounded-t border-b dark:border-gray-600 ">
                     <h3 className="text-xl font-medium text-gray-900 dark:text-white fontTitle">
-                      Portofolio Viewer 360°
+                      {data.title} | Portofolio Viewer 360°
                     </h3>
+                    <br />
+
                     <button
                       type="button"
                       className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -164,28 +169,41 @@ const DashboardPage = (props) => {
           <h1 className="text-4xl laptop:mx-auto text-center mb-6 fontTitle font-semibold laptop:p-4 ">
             Client & Partner
           </h1>
-          <div className="flex flex-wrap justify-evenly gap-6  laptop:flex-col">
-            {dataClient
-              .sort((a, b) => (a.id > b.id ? 1 : -1))
-              .map((data) => (
-                <>
-                  <div className="inline-flex shadow-lg w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full backdrop-blur-sm bg-opacity-30 bg-[#f8f8f8]">
-                    <img
-                      src={data.image_url}
-                      className=" w-1/2 laptop:w-full rounded-lg"
-                    />
-                    <div className="p-4">
-                      <h2 className="text-xl uppercase fontTitle font-bold my-2">
-                        {data.title}
-                      </h2>
-                      <p className="text-sm leading-normal text-justify">
-                        {data.description}
-                      </p>
+          <Suspense
+            fallback={
+              <div className="flex flex-wrap justify-evenly gap-6 laptop:flex-col">
+                {dataClient
+                  .sort((a, b) => (a.id > b.id ? 1 : -1))
+                  .map((data) => (
+                    <Loader />
+                  ))}
+              </div>
+            }
+          >
+            <div className="flex flex-wrap justify-evenly gap-6  laptop:flex-col">
+              {dataClient
+                .sort((a, b) => (a.id > b.id ? 1 : -1))
+                .map((data) => (
+                  <>
+                    <div className="inline-flex shadow-lg w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full backdrop-blur-sm bg-opacity-30 bg-[#f8f8f8]">
+                      <img
+                        alt={data.img}
+                        src={data.image_url}
+                        className=" w-1/2 laptop:w-full rounded-lg"
+                      />
+                      <div className="p-4">
+                        <h2 className="text-xl uppercase fontTitle font-bold my-2">
+                          {data.title}
+                        </h2>
+                        <p className="text-sm leading-normal text-justify">
+                          {data.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </>
-              ))}
-          </div>
+                  </>
+                ))}
+            </div>
+          </Suspense>
         </div>
       </section>
 
@@ -200,15 +218,17 @@ const DashboardPage = (props) => {
             <h1 className="text-4xl laptop:mx-auto text-center mb-6 fontTitle font-semibold laptop:p-4 ">
               About Us
             </h1>
-            <div className="flex gap-3 laptop:p-4 laptop:flex-col-reverse text-justify">
-              {dataAboutUs.map((data) => (
-                <>
-                  <span className="text-sm leading-relaxed">
-                    {data.description}
-                  </span>
-                </>
-              ))}
-            </div>
+            <Suspense fallback={<div className="text-4xl">LOADING..</div>}>
+              <div className="flex gap-3 laptop:p-4 laptop:flex-col-reverse text-justify">
+                {dataAboutUs.map((data) => (
+                  <>
+                    <span className="text-sm leading-relaxed">
+                      {data.description}
+                    </span>
+                  </>
+                ))}
+              </div>
+            </Suspense>
           </div>
         </div>
       </section>
@@ -227,6 +247,7 @@ const DashboardPage = (props) => {
               <>
                 <div className="inline-flex shadow-lg w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full bg-[#f8f8f8]">
                   <img
+                    alt="data.iamge"
                     src={data.image_url}
                     className=" w-1/2 laptop:w-full h-full rounded-lg"
                   />

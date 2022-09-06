@@ -1,7 +1,13 @@
 import axios from "axios";
 
 const GlobalGet = (args) =>
-  axios({ ...args, method: "GET" }, { timeout: 5 })
+  axios(
+    {
+      ...args,
+      method: "GET",
+    },
+    { timeout: 5 }
+  )
     .then((res) => {
       return res?.data;
     })

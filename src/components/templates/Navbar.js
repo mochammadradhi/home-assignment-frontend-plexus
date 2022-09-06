@@ -58,10 +58,10 @@ const Navbar = () => {
             } opacity-100 `}
           >
             {link.map((data, index) => (
-              <li key={data.name}>
+              <li key={data.name} className="p-3">
                 <Link
                   activeClass="active"
-                  className={`nav${index} text-white p-4  cursor-pointer`}
+                  className={`nav${index} text-white p-3  cursor-pointer hover:text-[#8bf7ff] active:text-[#8bf7ff]`}
                   to={data.name}
                   spy={true}
                   smooth={true}
