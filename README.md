@@ -6,7 +6,7 @@
 
     because issues cors blocked, please install extensions for allowed the cors policy  https://chrome.google.com/webstore/detail/cross-domain-cors/mjhpgnbimicffchbodmgfnemoghjakai
 
-## Inspired desing web by https://dribbble.com/shots/16988008-Agerior-Landing-Page-Interaction
+## Inspired Design Web by https://dribbble.com/shots/16988008-Agerior-Landing-Page-Interaction
 
 ## How To Run App
 
