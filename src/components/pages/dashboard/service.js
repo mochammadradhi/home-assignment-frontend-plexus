@@ -89,8 +89,9 @@ const Services = () => {
     fetchClient();
     fetchAbout();
     fetchTeam();
+    setLoading(false);
   }, []);
-  return { dataPortofolio, dataClient, dataAboutUs, dataTeam };
+  return { dataPortofolio, dataClient, dataAboutUs, dataTeam, loading };
 };
 
 export default Services;

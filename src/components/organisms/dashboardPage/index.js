@@ -2,13 +2,15 @@ import { FaFacebook, FaSlack, FaWhatsapp, FaPinterestP } from "react-icons/fa";
 import { Navbar, ScrollToTop, Footer, Loader } from "../../templates";
 import { useState, Suspense } from "react";
 import { Pannellum } from "pannellum-react";
+
 const DashboardPage = (props) => {
-  const { dataPortofolio, dataClient, dataAboutUs, dataTeam } = props;
+  const { dataPortofolio, dataClient, dataAboutUs, dataTeam, loading } = props;
   const [openModal, setOpenModal] = useState(false);
   const [dataClick, setDataClick] = useState([]);
   const changecontent = (content) => {
     setDataClick([content]);
   };
+  console.log(loading);
   return (
     <>
       {/* Rendering navbar from template */}
@@ -75,7 +77,13 @@ const DashboardPage = (props) => {
             <button className="text-lg p-3">Portfolio</button>
           </div>
 
-          <Suspense fallback={<div className="text-4xl">LOADING..</div>}>
+          {loading ? (
+            <div className="flex gap-3 laptop:flex-col laptop:p-4  ">
+              {dataPortofolio.map((data) => (
+                <Loader />
+              ))}
+            </div>
+          ) : (
             <div className="flex gap-3 laptop:flex-col laptop:p-4  ">
               {dataPortofolio.map((data) => (
                 <>
@@ -96,7 +104,7 @@ const DashboardPage = (props) => {
                 </>
               ))}
             </div>
-          </Suspense>
+          )}
         </div>
       </section>
 
@@ -169,17 +177,18 @@ const DashboardPage = (props) => {
           <h1 className="text-4xl laptop:mx-auto text-center mb-6 fontTitle font-semibold laptop:p-4 ">
             Client & Partner
           </h1>
-          <Suspense
-            fallback={
-              <div className="flex flex-wrap justify-evenly gap-6 laptop:flex-col">
-                {dataClient
-                  .sort((a, b) => (a.id > b.id ? 1 : -1))
-                  .map((data) => (
+
+          {loading ? (
+            <div className="flex flex-wrap justify-evenly gap-6 laptop:flex-col">
+              {dataClient
+                .sort((a, b) => (a.id > b.id ? 1 : -1))
+                .map((data) => (
+                  <div className="inline-flex  w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full">
                     <Loader />
-                  ))}
-              </div>
-            }
-          >
+                  </div>
+                ))}
+            </div>
+          ) : (
             <div className="flex flex-wrap justify-evenly gap-6  laptop:flex-col">
               {dataClient
                 .sort((a, b) => (a.id > b.id ? 1 : -1))
@@ -203,7 +212,7 @@ const DashboardPage = (props) => {
                   </>
                 ))}
             </div>
-          </Suspense>
+          )}
         </div>
       </section>
 
@@ -218,7 +227,13 @@ const DashboardPage = (props) => {
             <h1 className="text-4xl laptop:mx-auto text-center mb-6 fontTitle font-semibold laptop:p-4 ">
               About Us
             </h1>
-            <Suspense fallback={<div className="text-4xl">LOADING..</div>}>
+            {loading ? (
+              <div className="flex gap-3 laptop:p-4 laptop:flex-col-reverse text-justify">
+                {dataAboutUs.map((data) => (
+                  <Loader />
+                ))}
+              </div>
+            ) : (
               <div className="flex gap-3 laptop:p-4 laptop:flex-col-reverse text-justify">
                 {dataAboutUs.map((data) => (
                   <>
@@ -228,7 +243,7 @@ const DashboardPage = (props) => {
                   </>
                 ))}
               </div>
-            </Suspense>
+            )}
           </div>
         </div>
       </section>
@@ -242,30 +257,40 @@ const DashboardPage = (props) => {
           <h1 className="text-4xl laptop:mx-auto text-center mb-6 fontTitle font-semibold  laptop:p-4 ">
             Our Team
           </h1>
-          <div className="flex flex-wrap justify-evenly  gap-6 laptop:flex-col">
-            {dataTeam.map((data) => (
-              <>
-                <div className="inline-flex shadow-lg w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full bg-[#f8f8f8]">
-                  <img
-                    alt="data.iamge"
-                    src={data.image_url}
-                    className=" w-1/2 laptop:w-full h-full rounded-lg"
-                  />
-                  <div className="p-4">
-                    <h2 className="fontTitle text-xs font-bold uppercase my-2">
-                      {data.category}
-                    </h2>
-                    <h2 className="text-xl uppercase fontTitle font-bold my-2">
-                      {data.title}
-                    </h2>
-                    <p className="text-xs leading-relaxed text-justify">
-                      {data.description}
-                    </p>
-                  </div>
+          {loading ? (
+            <div className="flex flex-wrap justify-evenly  gap-6 laptop:flex-col">
+              {dataTeam.map((data) => (
+                <div className="inline-flex  w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full">
+                  <Loader />
                 </div>
-              </>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-evenly  gap-6 laptop:flex-col">
+              {dataTeam.map((data) => (
+                <>
+                  <div className="inline-flex shadow-lg w-2/5 p-4 laptop:p-8 rounded-lg laptop:inline-block laptop:w-full bg-[#f8f8f8]">
+                    <img
+                      alt="data.iamge"
+                      src={data.image_url}
+                      className=" w-1/2 laptop:w-full h-full rounded-lg"
+                    />
+                    <div className="p-4">
+                      <h2 className="fontTitle text-xs font-bold uppercase my-2">
+                        {data.category}
+                      </h2>
+                      <h2 className="text-xl uppercase fontTitle font-bold my-2">
+                        {data.title}
+                      </h2>
+                      <p className="text-xs leading-relaxed text-justify">
+                        {data.description}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

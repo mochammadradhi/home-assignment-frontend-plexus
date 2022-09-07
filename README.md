@@ -4,7 +4,9 @@
 
 ### !! Read me !!
 
-    because issues cors blocked, please install extensions for allowed the cors policy  https://chrome.google.com/webstore/detail/cross-domain-cors/mjhpgnbimicffchbodmgfnemoghjakai
+    if the image cannot opened the issues is beacause cors blocked,
+    please install extensions for allowed the cors policy
+    https://chrome.google.com/webstore/detail/cross-domain-cors/mjhpgnbimicffchbodmgfnemoghjakai
 
 ## Inspired Design Web by https://dribbble.com/shots/16988008-Agerior-Landing-Page-Interaction
 
